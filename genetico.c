@@ -48,9 +48,7 @@ void Mutacion(POBLACION *Q, double Pm){
 void Evaluacion(POBLACION *Q){
 	size_t i;
 	int n = Q->size;
-	for(i=0 ; i<n ; i++){ //Para todos los individuos
-		NoLinealidad(&Q->ind[i]); //Calcular la No linealidad.
-		SAC_0(&Q->ind[i]); 				//Calcular el criterio estricto de avalancha cero.
+	for(i=0 ; i<n ; i++){       //Para todos los individuos
 		aptitud(&Q->ind[i]); 			//Calcular la aptitud en base a NL y SAC_0 (restricciones).
 	}
 }
@@ -97,7 +95,7 @@ void Crossover(POBLACION *P, POBLACION *Q, double Pc){
 
 void one_point_crossover(INDIVIDUO *P1, INDIVIDUO *P2, INDIVIDUO *H1, INDIVIDUO *H2, double Pc){
 	int p, i;
-	if(randomperc() < Pc){ 				//Si random caé en la probabilidad de cruza
+	if(randomperc() < Pc){ 				  //Si random caé en la probabilidad de cruza
 		p = rndint(1, mop.nbin-2);		//buscar un punto de cruza
 		for(i=0 ; i<mop.nbin ; i++){	//Para toda la cadena binaria
 			if(i<p){					//Si aun no llegas al punto de cruza
@@ -130,9 +128,7 @@ void bit_wise_mutation(INDIVIDUO *Q, double Pm){
 void Display_ind(INDIVIDUO ind){
 	size_t i;
 	// El *-1 solo es para mostrar en transformada
-	printf("  \033[1;41m NL: %.3lf\033[0m", - ind.NL);
-	printf("  \033[1;41m SAC: %.3lf\033[0m", ind.SAC);
-	printf("  \033[1;41m f: %.3lf\033[0m x: ", - ind.f);
+	printf("  \033[1;41m f: %.3lf\033[0m x: ", ind.f);
 	for(i=0 ; i<mop.nbin ; i++){
 		printf("%d", ind.x[i]);
 	}
@@ -143,7 +139,6 @@ int Mejor_solucion(POBLACION *P){
 	size_t i, index;
   INDIVIDUO *mejor = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
   mejor->x=(int*)malloc(sizeof(int) * mop.nbin);
-	mejor->esp=(int*)malloc(sizeof(int) * mop.nbin);
   cpy_ind(mejor, &P->ind[0]);
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
@@ -152,7 +147,6 @@ int Mejor_solucion(POBLACION *P){
 			index = i;                  //
 		}
 	}
-	free(mejor->esp);
   free(mejor->x);
   free(mejor);
 	return index;
@@ -162,7 +156,6 @@ int Peor_solucion(POBLACION *P){
 	size_t i, index;
   INDIVIDUO *peor = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
   peor->x=(int*)malloc(sizeof(int) * mop.nbin);
-	peor->esp=(int*)malloc(sizeof(int) * mop.nbin);
   cpy_ind(peor, &P->ind[0]);
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
@@ -171,7 +164,6 @@ int Peor_solucion(POBLACION *P){
 			index = i;                  //
 		}
 	}
-	free(peor->esp);
   free(peor->x);
   free(peor);
 	return index;
@@ -209,7 +201,6 @@ void Ordenar(POBLACION *T){
 	size_t i,j;
 	INDIVIDUO *aux = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
   aux->x=(int*)malloc(sizeof(int) * mop.nbin);
-	aux->esp=(int*)malloc(sizeof(int) * mop.nbin);
 	for(i = 1; i < T->size; i++) {
 		for(j = 0; j < (T->size - i); j++){
 			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en términos
@@ -219,7 +210,6 @@ void Ordenar(POBLACION *T){
 		   }
 		}
 	}
-	free(aux->esp);
   free(aux->x);
   free(aux);
 }
