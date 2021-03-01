@@ -10,9 +10,8 @@
 
 #include "mem_structs.h"
 
-void fwht_transform(const int *src, int *dst, int n);
-void NoLinealidad(INDIVIDUO *p);
-void SAC_0(INDIVIDUO *p);
-void aptitud(INDIVIDUO *p);
+int xor(int a, int b);
+int hamming_distance(INDIVIDUO* A, INDIVIDUO *B);
+void aptitud(POBLACION* B, INDIVIDUO *p);
 
 #endif /* TRANFORMADA_H */

@@ -11,7 +11,7 @@
 #include "mem_structs.h"
 
 void Mutacion(POBLACION *Q, double Pm);
-void Evaluacion(POBLACION *Q);
+void Evaluacion(POBLACION *Q, POBLACION *B);
 void Crossover(POBLACION *P, POBLACION *Q, double Pc);
 void one_point_crossover(INDIVIDUO *P1, INDIVIDUO *P2, INDIVIDUO *H1, INDIVIDUO *H2, double Pc);
 void bit_wise_mutation(INDIVIDUO *Q, double Pm);

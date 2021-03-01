@@ -11,6 +11,7 @@
 /*y con una aptidud*/
 typedef struct{
 	int *x;		//Cadena binaria (Genotipo)
+	int *dist; //Arreglo que dice la HW del individio vs conjunto B.
 	double f;	//Valor función objetivo (Fenotipo)
 }INDIVIDUO;
 
@@ -31,6 +32,8 @@ typedef struct{
 	double Pm;	//Probabilidad de mutación
 }GA;
 
+extern int k;
+extern int radio;
 extern int n;
 extern GA ga;
 extern MOP mop;

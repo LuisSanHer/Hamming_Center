@@ -9,59 +9,19 @@
 #include "objetivo.h"
 #include "mem_structs.h"
 
-/**************COMANDO GNUPLOT******************/
-/*
- * set title 'Genotipo con n=4'
- * set grid
- * set autoscale
- * set xlabel 'Generaciones'
- * set ylabel 'Valor de aptitud'
- * set key bottom
- * plot 'n4.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n4.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n4.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
- *
- * set title 'Genotipo con n=6'
- * set grid
- * set autoscale
- * set xlabel 'Generaciones'
- * set ylabel 'Valor de aptitud'
- * set key bottom
- * plot 'n6.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n6.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n6.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
-
- * set title 'Genotipo con n=8'
- * set grid
- * set autoscale
- * set xlabel 'Generaciones'
- * set ylabel 'Valor de aptitud'
- * set key bottom
- * plot 'n8.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n8.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n8.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
-
- * set title 'Genotipo con n=10'
- * set grid
- * set autoscale
- * set xlabel 'Generaciones'
- * set ylabel 'Valor de aptitud'
- * set key bottom
- * plot 'n10.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n10.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n10.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
-
- * set title 'Genotipo con n=12'
- * set grid
- * set autoscale
- * set xlabel 'Generaciones'
- * set ylabel 'Valor de aptitud'
- * set key bottom
- * plot [0:200][1940:1990]'n12.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n12.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n12.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
-*/
-
 MOP mop;
 GA ga;
 int n;
+int k;
+int radio;
 
 int main(int argc, char *argv[]){
 
+	POBLACION B; // Conjunto B de k cadenas binarias.
 	POBLACION P,Q,T;
 	size_t i=0, mejor_p, peor_q;
-	int alg, longitud, poblacion, gmax, semilla;
-	char algoritmo[10], r[10], p[10], max[10], sem[10];
+	int alg, longitud, poblacion, gmax, semilla, k_aux, r_aux;
+	char algoritmo[10], r[10], p[10], max[10], sem[10], k_tmp[10], r_tmp[10];
 	FILE* file;
 
 	printf("\t1.- Genetico simple\n");
@@ -78,13 +38,13 @@ int main(int argc, char *argv[]){
 
 
 	do {
-		printf("Ingrese exponente (3,5,8,10,12) para la longitud de la cadena binaria (genotipo): ");
+		printf("Ingrese exponente (4,6,8) para la longitud de la cadena binaria (genotipo): ");
 		scanf("%s", r);
 		longitud = atoi(r);
 		//printf("%d\n", longitud);
-		if (longitud!=3 && longitud!=5 && longitud!=8 && longitud!=10 && longitud!=12)
+		if (longitud!=4 && longitud!=6 && longitud!=8)
 			printf("\tOpción invalida\n");
-	} while(longitud!=3 && longitud!=5 && longitud!=8 && longitud!=10 && longitud!=12);
+	} while(longitud!=4 && longitud!=6 && longitud!=8);
 
 
 	do {
@@ -115,6 +75,26 @@ int main(int argc, char *argv[]){
 			printf("\tOpción invalida\n");
 	} while( semilla<1 || semilla>10 );
 
+	do {
+		printf("\nIngrese el tamaño (k) del conjunto B de cadenas binarias: ");
+		scanf("%s", k_tmp);
+		k_aux = atoi(k_tmp);
+		//printf("%d\n", gmax);
+		if (k_aux == 0 )
+			printf("\tIngrese un número \n");
+	} while(k_aux == 0);
+
+	do {
+		printf("\nIngrese un radio (r): ");
+		scanf("%s", r_tmp);
+		r_aux = atoi(r_tmp);
+		//printf("%d\n", gmax);
+		if (r_aux == 0 )
+			printf("\tIngrese un número \n");
+	} while(r_aux == 0);
+
+	radio = r_aux;
+  k = k_aux;
 	n = longitud;
 	mop.nbin = pow(2, n);
 	mop.nobj = 1;
@@ -124,14 +104,19 @@ int main(int argc, char *argv[]){
 	ga.Pm = 1.0/mop.nbin;
 	ga.Gmax = gmax;
 
+	alloc_pop(&B, k); //Crear memoria para el conjunto B
+
 	alloc_pop(&P, ga.psize);
 	alloc_pop(&Q, ga.psize);
 	alloc_pop(&T, ga.psize*2);
 
 	randomize(semilla/10.0);
 
+	Inicializar(&B); //Inicializar el conjunto B de manera aleatoria
+	Display_pop(&B);
+
 	Inicializar(&P);
-	Evaluacion(&P);
+	Evaluacion(&P, &B);
 
 	switch(alg){
 		case 1:
@@ -140,7 +125,7 @@ int main(int argc, char *argv[]){
 				for(i=0 ; i<ga.Gmax ; i++){
 					Crossover(&P,&Q, ga.Pc);
 					Mutacion(&Q, ga.Pm);
-					Evaluacion(&Q);
+					Evaluacion(&Q, &B);
 					cpy_pop(&P, &Q);
 					//fprintf(file,"%zu\t", i);
 					estadisticas(&P, i, file);
@@ -154,7 +139,7 @@ int main(int argc, char *argv[]){
 			for(i=0 ; i<ga.Gmax ; i++){
 				Crossover(&P,&Q, ga.Pc);
 				Mutacion(&Q, ga.Pm);
-				Evaluacion(&Q);
+				Evaluacion(&Q, &B);
 				/*********************APLICANDO ELITISMO**************************/
 				mejor_p = Mejor_solucion(&P); 				//Obtener indice de la mejor solucion en P
 				peor_q = Peor_solucion(&Q); 				//Obtener indice de la peor solucion en Q
@@ -172,7 +157,7 @@ int main(int argc, char *argv[]){
 			for(i=0 ; i<ga.Gmax; i++){
 				Crossover(&P,&Q, ga.Pc);
 				Mutacion(&Q, ga.Pm);
-				Evaluacion(&Q);
+				Evaluacion(&Q, &B);
 				/*********************APLICANDO Miu + Lambda**************************/
 				Unir_poblaciones(&P,&Q,&T);
 				Seleccionar_mejores(&T,&P);
@@ -187,6 +172,7 @@ int main(int argc, char *argv[]){
 		break;
 	}
 
+	free_pop(&B);
 	free_pop(&T);
 	free_pop(&P);
 	free_pop(&Q);
