@@ -84,16 +84,6 @@ int main(int argc, char *argv[]){
 			printf("\tIngrese un número \n");
 	} while(k_aux == 0);
 
-	do {
-		printf("\nIngrese un radio (r): ");
-		scanf("%s", r_tmp);
-		r_aux = atoi(r_tmp);
-		//printf("%d\n", gmax);
-		if (r_aux == 0 )
-			printf("\tIngrese un número \n");
-	} while(r_aux == 0);
-
-	radio = r_aux;
   k = k_aux;
 	n = longitud;
 	mop.nbin = pow(2, n);
@@ -112,7 +102,8 @@ int main(int argc, char *argv[]){
 
 	randomize(semilla/10.0);
 
-	Inicializar(&B); //Inicializar el conjunto B de manera aleatoria
+	//Inicializar(&B); //Inicializar el conjunto B de manera aleatoria
+	Leer_Conjunto(&B); //Leer el conjunto de prueba junto a un radio.
 	Display_pop(&B);
 
 	Inicializar(&P);

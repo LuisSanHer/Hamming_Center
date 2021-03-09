@@ -10,6 +10,7 @@
 
 #include "mem_structs.h"
 
+void Leer_Conjunto(POBLACION *B);
 int xor(int a, int b);
 int hamming_distance(INDIVIDUO* A, INDIVIDUO *B);
 void aptitud(POBLACION* B, INDIVIDUO *p);

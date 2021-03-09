@@ -127,7 +127,7 @@ void bit_wise_mutation(INDIVIDUO *Q, double Pm){
 
 void Display_ind(INDIVIDUO ind){
 	size_t i;
-	// El *-1 solo es para mostrar en transformada
+	// El *-1 solo es para mostrar en estadisticas
 	printf("  \033[1;41m f: %.3lf\033[0m x: ", - ind.f);
 	for(i=0 ; i<mop.nbin ; i++){
 		printf("%d", ind.x[i]);
@@ -187,7 +187,7 @@ void estadisticas(POBLACION *P, size_t i, FILE* file){
 	printf("\033[1;44mGeneración: %.3zu\033[0m", i);
 	mejor = Mejor_solucion(P);
 	Display_ind(P->ind[mejor]);
-	// El *-1 solo es para mostrar en transformada
+	// El *-1 solo es para mostrar en estadisticas
 	fprintf(file,"%lf\n", - P->ind[mejor].f);
 }
 

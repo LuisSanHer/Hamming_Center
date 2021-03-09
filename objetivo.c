@@ -11,6 +11,28 @@
 #include <math.h>
 #include "objetivo.h"
 
+void Leer_Conjunto(POBLACION *B){
+	FILE* fichero;
+	if (n == 4) {
+		fichero = fopen("pruebas4.txt","r");
+	}else if(n == 6){
+		fichero = fopen("pruebas6.txt","r");
+	}else{
+		fichero = fopen("pruebas8.txt","r");
+	}
+	size_t i,j;
+	int aux;
+	fscanf(fichero, "%d", &aux);
+	radio = aux;
+	for(i=0 ; i<B->size ; i++){
+		for(j=0 ; j<mop.nbin ; j++){
+			fscanf(fichero, "%d", &aux);
+			B->ind[i].x[j] = aux;
+		}
+	}
+	fclose(fichero);
+}
+
 int xor(int a, int b){
 	//Si son iguales dame 0, si no, dame 1.
 	if(a == b){
