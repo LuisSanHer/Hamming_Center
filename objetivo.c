@@ -54,12 +54,12 @@ int hamming_distance(INDIVIDUO* A, INDIVIDUO *B){
 	return hamming;
 }
 
-void aptitud(POBLACION* B, INDIVIDUO *p){
+void aptitud(POBLACION* S, INDIVIDUO *p){
 	int cont, aux;
   cont = 0;
   //printf("Distancias de hamming\n");
   for (int i=0 ; i<k ; i++) {
-    p->dist[i] = hamming_distance(&B->ind[i], p);
+    p->dist[i] = hamming_distance(&S->ind[i], p);
     //printf("%d ", distancias[i]);
     if (p->dist[i] <= radio) {
       cont++;
