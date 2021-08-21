@@ -111,7 +111,7 @@ int main(int argc, char *argv[]){
 
 	switch(alg){
 		case 1:
-			file = fopen("simple.txt", "w");
+			file = fopen("Experimentos/simple.txt", "w");
 			printf("\n\t\t\t \033[1;42m Genetico Simple \033[0m \n\n");
 				for(i=0 ; i<ga.Gmax ; i++){
 					Crossover(&P,&Q, ga.Pc);
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
 				printf("\n\t\t\t \033[1;42m Genetico Simple terminado \033[0m \n\n");
 		break;
 		case 2:
-			file = fopen("elitismo.txt", "w");
+			file = fopen("Experimentos/elitismo.txt", "w");
 			printf("\n\t\t\t \033[1;42m Genetico con elitismo \033[0m \n\n");
 			for(i=0 ; i<ga.Gmax ; i++){
 				Crossover(&P,&Q, ga.Pc);
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]){
 			printf("\n\t\t\t \033[1;42m Genetico con elitismo terminado \033[0m \n\n");
 		break;
 		case 3:
-			file = fopen("miulambda.txt", "w");
+			file = fopen("Experimentos/miulambda.txt", "w");
 			printf("\n\t\t\t \033[1;42m Genetico Miu plus Lambda \033[0m \n\n");
 			for(i=0 ; i<ga.Gmax; i++){
 				Crossover(&P,&Q, ga.Pc);

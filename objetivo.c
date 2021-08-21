@@ -14,11 +14,11 @@
 void Leer_Conjunto(POBLACION *B){
 	FILE* fichero;
 	if (n == 4) {
-		fichero = fopen("pruebas4.txt","r");
+		fichero = fopen("Files_Prueba/pruebas4.txt","r");
 	}else if(n == 6){
-		fichero = fopen("pruebas6.txt","r");
+		fichero = fopen("Files_Prueba/pruebas6.txt","r");
 	}else{
-		fichero = fopen("pruebas8.txt","r");
+		fichero = fopen("Files_Prueba/pruebas8.txt","r");
 	}
 	size_t i,j;
 	int aux;
